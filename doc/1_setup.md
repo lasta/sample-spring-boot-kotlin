@@ -35,65 +35,65 @@ Kotlin Fest 2018で、Kotlin でも [Kotlin ネイティブなフレームワー
 * Open IntelliJ IDEA
 * File -> New -> Project 
 * New Project -> Spring Initializr
-  * Project SDK : 1.8
-  * Choose Initializr Service URL : Default
+    * Project SDK : 1.8
+    * Choose Initializr Service URL : Default
 * Project Metadata
-  * Group : com.lasta.api (任意)
-  * Artifact : sample (任意)
-  * Type : Gradle Project
-    * Maven のほうが好きな場合は Maven Project
-    * Maven POM や Gradle Config にすると `pom.xml` や `build.gralde` のみ生成されて IDEA Project が生成されないので、初心者の方は避けたほうが良いです
-  * ![Project Metadata]( ./assets/1/1_project_metadata.png )
+    * Group : com.lasta.api (任意)
+    * Artifact : sample (任意)
+    * Type : Gradle Project
+        * Maven のほうが好きな場合は Maven Project
+        * Maven POM や Gradle Config にすると `pom.xml` や `build.gralde` のみ生成されて IDEA Project が生成されないので、初心者の方は避けたほうが良いです
+    * ![Project Metadata]( ./assets/1/1_project_metadata.png )
 * Dependencies
-  * 多すぎてよく把握していないので、必要そうなもののみチェックを入れます
-    * あとから `pom.xml` や `build.gradle` に記述すれば追加できます
-  * Spring Boot : 2.0.5 (執筆時現在最新安定版)
-  * Core
-    * [DevTools](https://docs.spring.io/spring-boot/docs/2.0.5.RELEASE/reference/htmlsingle/#using-boot-devtools)
-      * 開発がよりやりやすくなるらしい
-    * Lombok
-      * アノテーションライブラリ
-      * いわゆる「おまじない」(boilerplate code) を減らせる
-    * [Configuration Processor](https://docs.spring.io/spring-boot/docs/2.0.5.RELEASE/reference/htmlsingle/#configuration-metadata-annotation-processor)
-      * 自作の設定項目を追加できる
-    * Validation
-      * GET リクエストのパラメータ等のバリデーションを記述できる
-  * Web
-    * [Web](https://docs.spring.io/spring-boot/docs/2.0.5.RELEASE/reference/htmlsingle/#boot-features-developing-web-applications)
-      * Apache Tomcat + Spring MVC を用いた Web 開発
-      * Core - Validation もこれに含まれている
-    * Rest Repositories
-      * Spring MVC を用いて RESTful なエンドポイントを作れる
-    * REST Docs
-      * コード内に記述したドキュメントを用いて RESTful サービスのAPI仕様書を自動生成できる
-  * Template Engine
-    * Thymeleaf
-      * Spring Boot でよく使われるテンプレートエンジン
-  * SQL
-    * JPA
-      * Java persistence API
-      * `spring-data-jpa` 、 `spring-orm` 、 `Hibernate` を含む
-    * MySQL
-      * MySQL 用 JDBC Driver
-    * (用いるDBに対応するJDBCドライバをここで選択する)
-  * NoSQL
-    * Elasticsearch
-    * Solr
-    * (MongoDB や Redis, Cassandra など、用いたい NoSQL はここで選択する)
-  * [Integration](http://spring.io/projects/spring-integration)
-    * [Spring Integration](https://docs.spring.io/spring-boot/docs/2.0.5.RELEASE/reference/htmlsingle/#boot-features-integration)
-      * Spring Framework の拡張
-      * POJO や DI 周りを特により高度に扱うことができる ?
-  * Ops
-    * [Actuator](https://docs.spring.io/spring-boot/docs/2.0.5.RELEASE/reference/htmlsingle/#production-ready)
-    * IntelliJ IDEA で API 一覧化やヘルスチェックの追加の指定ができるようになるので、基本的に用いたほうが良い
+    * 多すぎてよく把握していないので、必要そうなもののみチェックを入れます
+        * あとから `pom.xml` や `build.gradle` に記述すれば追加できます
+    * Spring Boot : 2.0.5 (執筆時現在最新安定版)
+    * Core
+        * [DevTools](https://docs.spring.io/spring-boot/docs/2.0.5.RELEASE/reference/htmlsingle/#using-boot-devtools)
+            * 開発がよりやりやすくなるらしい
+        * Lombok
+            * アノテーションライブラリ
+            * いわゆる「おまじない」(boilerplate code) を減らせる
+        * [Configuration Processor](https://docs.spring.io/spring-boot/docs/2.0.5.RELEASE/reference/htmlsingle/#configuration-metadata-annotation-processor)
+            * 自作の設定項目を追加できる
+        * Validation
+            * GET リクエストのパラメータ等のバリデーションを記述できる
+    * Web
+        * [Web](https://docs.spring.io/spring-boot/docs/2.0.5.RELEASE/reference/htmlsingle/#boot-features-developing-web-applications)
+            * Apache Tomcat + Spring MVC を用いた Web 開発
+            * Core - Validation もこれに含まれている
+        * Rest Repositories
+            * Spring MVC を用いて RESTful なエンドポイントを作れる
+        * REST Docs
+            * コード内に記述したドキュメントを用いて RESTful サービスのAPI仕様書を自動生成できる
+    * Template Engine
+        * Thymeleaf
+            * Spring Boot でよく使われるテンプレートエンジン
+    * SQL
+        * JPA
+            * Java persistence API
+            * `spring-data-jpa` 、 `spring-orm` 、 `Hibernate` を含む
+        * MySQL
+            * MySQL 用 JDBC Driver
+        * (用いるDBに対応するJDBCドライバをここで選択する)
+    * NoSQL
+        * Elasticsearch
+        * Solr
+        * (MongoDB や Redis, Cassandra など、用いたい NoSQL はここで選択する)
+    * [Integration](http://spring.io/projects/spring-integration)
+        * [Spring Integration](https://docs.spring.io/spring-boot/docs/2.0.5.RELEASE/reference/htmlsingle/#boot-features-integration)
+            * Spring Framework の拡張
+            * POJO や DI 周りを特により高度に扱うことができる ?
+    * Ops
+        * [Actuator](https://docs.spring.io/spring-boot/docs/2.0.5.RELEASE/reference/htmlsingle/#production-ready)
+        * IntelliJ IDEA で API 一覧化やヘルスチェックの追加の指定ができるようになるので、基本的に用いたほうが良い
 * Project Name : sample (任意)
 * Project location : `~/repos/sample-spring-boot-kotlin` (任意)
 * Finish!
 
 
 * Import module from Gradle
-  * Use auto-import のみチェックをいれて OK を押下
+    * Use auto-import のみチェックをいれて OK を押下
 
 ## 動作確認
 ここまで行うと、 Gradle, Maven ともにライブラリのダウンロードが始まります。
@@ -132,3 +132,5 @@ dependencies {
 
 ## 次回
 * Hello World を返却する (予定)
+
+
