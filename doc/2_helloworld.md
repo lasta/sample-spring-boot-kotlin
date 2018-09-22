@@ -151,5 +151,168 @@ class HelloController {
     * `hello world` が返却される :tada:
     * ![browser]( ./assets/2/browser.png )
 
+## 単体テスト
+`/hello/world` API (`HelloWorldController` クラス) の単体テストを作成します。
+[こちら](https://spring.io/guides/gs/spring-boot/) を参考に作成しました。
+JUnit 4.12 を用いて作成します。
+Spring Boot にはテストフレームワークのライブラリがあるため、依存関係に追加しておきます。
+(1. 環境構築編 の手順で作成している場合、すでに導入済みです)
+
+```groovy:build.gradle
+dependencies {
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+```
+
+### 単体テストの実装
+```kotlin:src/test/kotlin/com.lasta.api.sample.controller.HelloControllerTest.kt
+package com.lasta.api.sample.controller
+
+import org.hamcrest.Matchers.equalTo
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.MediaType
+import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+
+/**
+ * Test class for {@link HelloController}
+ * cf. https://spring.io/guides/gs/spring-boot/ Add Unit Tests
+ */
+@RunWith(SpringRunner::class)
+@SpringBootTest
+@AutoConfigureMockMvc
+class HelloControllerTest {
+
+    @Autowired
+    lateinit var mvc: MockMvc
+
+    @Test
+    fun test_getHelloWorld_thenOk() {
+        mvc.perform(MockMvcRequestBuilders.get("/hello/world")
+                .accept(MediaType.TEXT_PLAIN_VALUE))
+                .andExpect(status().isOk)
+                .andExpect(content().string(equalTo<String>("hello world")))
+    }
+}
+```
+
+* `MockMvc`
+  * HTTP リクエストを `DispatcherServlet` に投げ、結果を取得する mock
+  * `@Autowired` によってコンストラクタの起動よりあとにInjectされるため、 `lateinit` を付与する
+* `MockMvcRequestBuilders` はリクエストURLと期待する結果を指定するビルダー
+
+成功すると特に何もログが出力されません。
+あまりおもしろくないので、テスト失敗例も記載しておきます。
+
+下記のようにテストコードを修正して、実行してみます。
+
+```diff:テストを失敗させる
+-               .andExpect(content().string(equalTo<String>("hello world")))
++               .andExpect(content().string(equalTo<String>("hello world!")))
+```
+
+```
+2018-09-23 01:31:23.725  INFO 32760 --- [           main] c.l.a.s.controller.HelloControllerTest   : Started HelloControllerTest in 21.538 seconds (JVM running for 26.349)
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /hello/world
+       Parameters = {}
+          Headers = {Accept=[text/plain]}
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.lasta.api.sample.controller.HelloController
+           Method = public java.lang.String com.lasta.api.sample.controller.HelloController.helloWorld()
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = {Content-Type=[text/plain;charset=UTF-8], Content-Length=[11]}
+     Content type = text/plain;charset=UTF-8
+             Body = hello world
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+java.lang.AssertionError: Response content
+Expected: "hello world!"
+     but: was "hello world"
+Expected :hello world!
+Actual   :hello world
+ <Click to see difference>
+
+
+	at org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)
+	at org.springframework.test.web.servlet.result.ContentResultMatchers.lambda$string$3(ContentResultMatchers.java:129)
+	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:178)
+	at com.lasta.api.sample.controller.HelloControllerTest.test_getHelloWorld_thenOk(HelloControllerTest.kt:33)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestExecutionCallbacks.evaluate(RunBeforeTestExecutionCallbacks.java:73)
+	at org.springframework.test.context.junit4.statements.RunAfterTestExecutionCallbacks.evaluate(RunAfterTestExecutionCallbacks.java:83)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:75)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:86)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:84)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:251)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:97)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:70)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:190)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:68)
+	at com.intellij.rt.execution.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:47)
+	at com.intellij.rt.execution.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:242)
+	at com.intellij.rt.execution.junit.JUnitStarter.main(JUnitStarter.java:70)
+```
+
+下記が具体的な理由です。
+
+```
+java.lang.AssertionError: Response content
+Expected: "hello world!"
+     but: was "hello world"
+Expected :hello world!
+Actual   :hello world
+```
+
+非常にわかりやすいですね。
+
 ## 次回
 * GET リクエストのパラメータ解析
