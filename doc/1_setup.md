@@ -1,5 +1,4 @@
 # Spring Boot 2 に Kotlin で入門してみた - 1. 環境構築編
-# Spring Boot 2 に Kotlin で入門してみた - 1. 環境構築編
 新規でAPIサーバを作りたくなり、Spring Boot 2 を用いて作成してみます。
 Kotlin Fest 2018で、Kotlin でも [Kotlin ネイティブなフレームワーク(ktorなど)][ktor] ではなくて [Java ネイティブなフレームワーク][Kotlin Fest 2018] を使うのがおすすめという話があったので、 Spring Boot 2 を選びました。
 
