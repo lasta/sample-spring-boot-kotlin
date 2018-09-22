@@ -314,5 +314,8 @@ Actual   :hello world
 
 非常にわかりやすいですね。
 
+Spring Framework は DI (Dependency Injection) と AOP (Aspect Oriented Programming) を前提としているため、その分テストフレームワークは DI しやすいよう設計されています。
+そのため、境界を意識した実装ができていれば、テストコードは非常に書きやすいです。
+
 ## 次回
 * GET リクエストのパラメータ解析
