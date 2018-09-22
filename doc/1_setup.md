@@ -1,4 +1,5 @@
 # Spring Boot 2 に Kotlin で入門してみた - 1. 環境構築編
+# Spring Boot 2 に Kotlin で入門してみた - 1. 環境構築編
 新規でAPIサーバを作りたくなり、Spring Boot 2 を用いて作成してみます。
 Kotlin Fest 2018で、Kotlin でも [Kotlin ネイティブなフレームワーク(ktorなど)][ktor] ではなくて [Java ネイティブなフレームワーク][Kotlin Fest 2018] を使うのがおすすめという話があったので、 Spring Boot 2 を選びました。
 
@@ -106,7 +107,7 @@ Kotlin Fest 2018で、Kotlin でも [Kotlin ネイティブなフレームワー
 依存ライブラリに `spring-boot-starter--data-jpa` がある (`pom.xml` または `build.gradle` に記載がある)場合、DBの接続情報を設定ファイル (`src/main/resources/application.properties`) に記載しないとエラーを吐いて起動に失敗します。
 一時的に依存関係から削除してあげればOKです。
 
-```groovy:一時的にJPA, MySQLを用いないようにする
+```groovy:一時的にJPA,MySQLを用いないようにする
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-actuator')
     compile('org.springframework.boot:spring-boot-starter-data-elasticsearch')
@@ -127,3 +128,6 @@ dependencies {
     testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
 }
 ```
+
+## 次回
+* Hello World を返却する (予定)
