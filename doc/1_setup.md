@@ -14,8 +14,11 @@ Kotlin Fest 2018で、Kotlin でも [Kotlin ネイティブなフレームワー
 誤りがあった際には、ご指摘いただけると嬉しいです!
 一方で完全に未経験のため、同様にこれから始める方の参考になると思います。
 
+[ソースコードは Github に置きました][github]
+
 [ktor]: https://qiita.com/lasta/items/2c25ae5a875ba8da4f8a
 [Kotlin Fest 2018]: http://tech.connehito.com/entry/2018/08/31/131552
+[github]: https://github.com/lasta/sample-spring-boot-kotlin/tree/qiita/1-setup
 
 ## 参考書
 * [Spring徹底入門 Spring FrameworkによるJavaアプリケーション開発](https://www.amazon.co.jp/gp/product/B01IEWNLBU/ref=oh_aui_d_detailpage_o01_?ie=UTF8&psc=1)
@@ -74,7 +77,7 @@ Kotlin Fest 2018で、Kotlin でも [Kotlin ネイティブなフレームワー
   * NoSQL
     * Elasticsearch
     * Solr
-    * (MongoDB や Redis, Cassandra など、用いたい NoSQL はここで選択する):w
+    * (MongoDB や Redis, Cassandra など、用いたい NoSQL はここで選択する)
   * [Integration](http://spring.io/projects/spring-integration)
     * [Spring Integration](https://docs.spring.io/spring-boot/docs/2.0.5.RELEASE/reference/htmlsingle/#boot-features-integration)
       * Spring Framework の拡張
@@ -83,7 +86,7 @@ Kotlin Fest 2018で、Kotlin でも [Kotlin ネイティブなフレームワー
     * [Actuator](https://docs.spring.io/spring-boot/docs/2.0.5.RELEASE/reference/htmlsingle/#production-ready)
     * IntelliJ IDEA で API 一覧化やヘルスチェックの追加の指定ができるようになるので、基本的に用いたほうが良い
 * Project Name : sample (任意)
-* Project location : `~/repos/sample` (任意)
+* Project location : `~/repos/sample-spring-boot-kotlin` (任意)
 * Finish!
 
 
