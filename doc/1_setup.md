@@ -15,6 +15,8 @@ Kotlin Fest 2018で、Kotlin でも [Kotlin ネイティブなフレームワー
 誤りがあった際には、ご指摘いただけると嬉しいです!
 一方で完全に未経験のため、同様にこれから始める方の参考になると思います。
 
+目標は、 Solr を用いて検索した結果をもとに MySQL からデータを取得して返却する API を作成することとしました。
+
 [ソースコードは Github に置きました][github]
 
 [ktor]: https://qiita.com/lasta/items/2c25ae5a875ba8da4f8a
