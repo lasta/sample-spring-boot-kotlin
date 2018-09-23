@@ -8,7 +8,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized::class)
-class GreetingServiceImplGreetTest(val phase: GreetingPhase, val name: String?, val expected: String) {
+class GreetingServiceImplGreetTest(private val phase: GreetingPhase, private val name: String?, private val expected: String) {
     companion object {
         @JvmStatic
         @Parameterized.Parameters
@@ -31,5 +31,4 @@ class GreetingServiceImplGreetTest(val phase: GreetingPhase, val name: String?, 
     fun test_greet() {
         assertThat(GreetingServiceImpl().greet(phase, name), `is`(expected))
     }
-
 }
