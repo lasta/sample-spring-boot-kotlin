@@ -369,7 +369,7 @@ Good Morning.
 
 リクエストパラメータが不正の場合は 400 Bad Request の上でその原因を明示して上げたほうが親切ですが、それについては後ほど行います。
 
-### Form の実装
+### Form の利用
 ここまでで、 GET リクエストを受け取る API の実装およびリクエストパラメータのバリデーションを行いました。
 今回はパラメータが2つだけなのであまり問題にはなりませんでしたが、もしリクエストパラメータが10個、20個になったらどうなるでしょうか?
 `@GetMapping` のメソッドの引数の数が大変なことになりますね。
@@ -378,3 +378,86 @@ Good Morning.
 そんなシーンに対応できるのが、 Form クラスです。
 リクエストパラメータの値を Form クラスに格納するようにします。
 また、バリデーションも Form クラスで行うことで、より高度なバリデーションを行うことができるようになります。
+
+#### Form クラスの実装
+```kotlin:GreetingForm.kt
+package com.lasta.api.sample.model.form
+
+import com.lasta.api.sample.constant.GreetingPhase
+import java.io.Serializable
+import javax.validation.constraints.NotNull
+
+class GreetingForm : Serializable {
+    companion object {
+        private const val serialVersionUID: Long = 1L
+    }
+
+    @NotNull
+    lateinit var phase: GreetingPhase
+
+    var name: String? = null
+}
+```
+
+##### GreetingForm
+フィールドはリクエストパラメータ名と同様に `phase` と `name` を用意しました。
+型は `GreetingPhase` としています。
+この型の変換は `GreetingController#initBinder` で行われます。
+`phase` は `@NotNull` なので `lateinit` で、 `name` は nullable なので、デフォルト値として `null` を代入しています。
+
+#### Controller クラスの改修
+From クラスを作成したので、これを用いるように Controller クラスを改修します。
+
+```diff:GreetingController.kt
+  package com.lasta.api.sample.controller
+  
+  import com.lasta.api.sample.constant.GreetingPhase
+  import com.lasta.api.sample.model.converter.GreetingPhaseConverter
+  import com.lasta.api.sample.model.form.GreetingForm
+  import com.lasta.api.sample.service.GreetingService
+  import org.springframework.http.MediaType
+  import org.springframework.validation.annotation.Validated
+  import org.springframework.web.bind.WebDataBinder
+  import org.springframework.web.bind.annotation.GetMapping
+  import org.springframework.web.bind.annotation.InitBinder
+  import org.springframework.web.bind.annotation.ModelAttribute
+  import org.springframework.web.bind.annotation.RequestMapping
+  import org.springframework.web.bind.annotation.RestController
+- import javax.validation.constraints.NotNull
+  
+- @Validated
+  @RestController
+  @RequestMapping(path = ["greeting"])
+  class GreetingController(private val service: GreetingService) {
+  
+-     @GetMapping(produces = [MediaType.TEXT_PLAIN_VALUE])
+-     fun greet(@NotNull @RequestParam(value = "phase") phase: GreetingPhase,
+-               @RequestParam(value = "name") name: String?): String {
+-         return service.greet(phase, name)
+-     }
+  
++     @GetMapping(produces = [MediaType.TEXT_PLAIN_VALUE])
++     fun greet(@ModelAttribute @Validated form: GreetingForm): String {
++         return service.greet(form.phase, form.name)
++     }
+  
+      @InitBinder
+      fun initBinder(webDataBinder: WebDataBinder) {
+          webDataBinder.registerCustomEditor(GreetingPhase::class.java, GreetingPhaseConverter())
+      }
+  }
+```
+
+##### GreetingController#greet
+`GreetingForm` に値を渡すために `@ModelAttribute` を付与します。
+また、Validationをしてほしいためこの値に `@Validated` を付与します。
+これで、改修前と同様の動作をします。
+
+#### Form のプロパティ名について
+リクエストパラメータのキーがスネークケースやケバブケースの場合、Formクラスへのマッピングが失敗します。
+そのため、Formクラスの各プロパティに明示的にキー名を指定したいのですが、それを行う機能は無いようです。
+[独自アノテーションを作成しようとして挫折](http://shibuya-3percent.hatenablog.com/entry/2016/07/03/190549)し、結局 `ModelMapper` を用いたという記事がありました。
+なにか良い方法はないものでしょうか?
+
+## 次回
+DB 接続 (予定)
