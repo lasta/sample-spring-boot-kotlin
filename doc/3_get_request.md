@@ -459,5 +459,8 @@ From クラスを作成したので、これを用いるように Controller ク
 [独自アノテーションを作成しようとして挫折](http://shibuya-3percent.hatenablog.com/entry/2016/07/03/190549)し、結局 `ModelMapper` を用いたという記事がありました。
 なにか良い方法はないものでしょうか?
 
+## 単体テスト
+<!-- TODO: JUnit で単体テスト -->
+
 ## 次回
 DB 接続 (予定)
