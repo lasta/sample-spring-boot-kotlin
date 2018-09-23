@@ -22,7 +22,7 @@ Kotlin Fest 2018で、Kotlin でも [Kotlin ネイティブなフレームワー
 
 [ktor]: https://qiita.com/lasta/items/2c25ae5a875ba8da4f8a
 [Kotlin Fest 2018]: http://tech.connehito.com/entry/2018/08/31/131552
-[github]: https://github.com/lasta/sample-spring-boot-kotlin/tree/qiita/2-helloworld
+[github]: https://github.com/lasta/sample-spring-boot-kotlin/tree/qiita/3-get-request
 
 ## 参考書
 * [Spring徹底入門 Spring FrameworkによるJavaアプリケーション開発](https://www.amazon.co.jp/gp/product/B01IEWNLBU/ref=oh_aui_d_detailpage_o01_?ie=UTF8&psc=1)
@@ -36,7 +36,7 @@ Kotlin Fest 2018で、Kotlin でも [Kotlin ネイティブなフレームワー
 ### DI - Dependency Injection
 DI はよく「依存性の注入」と訳されますが、「注入」という言葉が微妙にずれているため、あまり日本語では考えないほうが良いです。(個人的な意見です)
 あえて日本語で解説するならば、「依存している外部のなにか (インスタンス、定数、変数) を外から入れてあげること」です。
-詳しい解説は [猿でも分かる! Dependency Injection: 依存性の注入](https://qiita.com/hshimo/items/1136087e1c6e5c5b0d9f) がわかりやすかったです。
+詳しい解説は [猿でも分かる! Dependency Injection: 依存性の注入](https://qiita.com/hshimo/items/1136087e1c6e5c5b0d9f) がわかりやすいです。
 
 Spring Boot では、Webアプリケーションでよくある3層アーキテクチャ (後述) を採用しており、その各層 + α 間はできるだけ疎結合にするべきです。
 そうすることにより、実装に柔軟性ができ、また単体テストが非常にやりやすくなります。
@@ -80,36 +80,36 @@ Spring Boot では、下記のアノテーションを付与したクラスがDI
 それぞれの要素は、下記のように対応します。
 
 * Client
-  * ブラウザや `curl` など
+    * ブラウザや `curl` など
 * Controller 層
-  * リクエストを受け取り、値を返却するエンドポイントとなるクラス
-  * Spring Framework では一般に `XxxController` というクラス名が用いられる
-  * 基本的にロジックは持たず、処理は Model 層に任せる
-  * リクエストパラメータのみを Form 層に分けることがある
+    * リクエストを受け取り、値を返却するエンドポイントとなるクラス
+    * Spring Framework では一般に `XxxController` というクラス名が用いられる
+    * 基本的にロジックは持たず、処理は Model 層に任せる
+    * リクエストパラメータのみを Form 層に分けることがある
 * Service 層
-  * ビジネスロジックを持つ
-  * `XxxService` というインタフェース名と、 `XxxServiceImpl` というクラス名が用いられる
+    * ビジネスロジックを持つ
+    * `XxxService` というインタフェース名と、 `XxxServiceImpl` というクラス名が用いられる
 * DAO 層
-  * 外部リソース(DB 等)へアクセスするインタフェース及び実装
-  * `XxxRepository` というインタフェース名と `XxxRepositoryImpl` というクラス名が用いられる
-  * 今回は外部リソースへのアクセスはしないため登場しません
+    * 外部リソース(DB 等)へアクセスするインタフェース及び実装
+    * `XxxRepository` というインタフェース名と `XxxRepositoryImpl` というクラス名が用いられる
+    * 今回は外部リソースへのアクセスはしないため登場しない
 
 ## 3. GET リクエストのパラメータ解析 編
 今回作成するAPIは下記のとおりです。
 
 * path : `/greeting`
 * parameter
-  * `phase` (必須)
-    * 朝 / 昼 / 夜を指定
-    * Enum型
-      * `morning`
-      * `noon`
-      * `evening`
-    * デフォルト値 なし
-  * `name`
-    * 名前を指定
-    * String 型
-    * デフォルト値 なし
+    * `phase` (必須)
+        * 朝 / 昼 / 夜を指定
+        * Enum型
+            * `morning`
+            * `noon`
+            * `evening`
+        * デフォルト値 なし
+    * `name`
+        * 名前を指定
+        * String 型
+        * デフォルト値 なし
 
 ### 実装と解説
 パッケージ構成は下記の通りです。
@@ -168,13 +168,13 @@ class GreetingController(private val service: GreetingService) {
 
 ##### Controller クラスのアノテーション
 * `@Validated`
-  * `@Valid` が付与されたリクエストパラメータが全て Valid かどうか検査する
+    * `@Valid` が付与されたリクエストパラメータが全て Valid かどうか検査する
 * `@RestController`
-  * Spring MVC がリクエストを扱うための準備
+    * Spring MVC がリクエストを扱うための準備
 * `@RequestMapping`
-  * リクエストを定義
-  * path
-    * リクエストパスを定義
+    * リクエストを定義
+    * path
+        * リクエストパスを定義
 
 ##### Controller クラスのコンストラクタ
 * `@Service` アノテーションが付与されている `GreetingServiceImpl` (後述) はDIコンテナに登録されているので、Inject できる
@@ -190,26 +190,26 @@ class GreetingControlle {
 
 ##### Controller#greet メソッドの実装
 * `@GetMapping`
-  * GET リクエストを定義
-  * `produces`
-    * 返却する Media-Type を定義する
+    * GET リクエストを定義
+    * `produces`
+        * 返却する Media-Type を定義する
 * `@NotNull @RequestParam(value = "phase") phase: GreetingPhase)`
-  * `@RequestParam`
-    * リクエストパラメータを定義
-    * `value`
-      * リクエストパラメータのキーを指定
-  * `@NotNull`
-    * リクエストパラメータが Not null でなければならないというバリデーションを行う
-  * 変数 `phase` は 列挙型 `GreetingPhase` 
+    * `@RequestParam`
+        * リクエストパラメータを定義
+        * `value`
+            * リクエストパラメータのキーを指定
+    * `@NotNull`
+        * リクエストパラメータが Not null でなければならないというバリデーションを行う
+    * 変数 `phase` は 列挙型 `GreetingPhase` 
 * `@RequestParam(value = "name") name: String?`
-  * nullable な String 型のリクエストキー `name` を定義
+    * nullable な String 型のリクエストキー `name` を定義
 
 ##### controller#initBinder メソッドの実装
 * `@InitBinder`
-  * 型変換の方法を登録
-    * ここでは、 `String` から `GreetingPhase` に変換する (実装は後述)
+    * 型変換の方法を登録
+        * ここでは、 `String` から `GreetingPhase` に変換する (実装は後述)
 * `webDataBinder.registerCustomEditor(GreetingPhase::class.java, GreetingPhaseConverter())`
-  * システム全体の型変換の方法をもつオブジェクト `webDataBinder` に対し、独自に定義した型 (`GreetingPhase`) とその変換方法 `GreetingPhaseConverter` を登録
+    * システム全体の型変換の方法をもつオブジェクト `webDataBinder` に対し、独自に定義した型 (`GreetingPhase`) とその変換方法 `GreetingPhaseConverter` を登録
 
 #### Service
 
@@ -247,7 +247,6 @@ class GreetingServiceImpl: GreetingService {
 ##### GreetingServiceImpl
 `greet` のロジックを実装したものになります。
 `@Service` アノテーションを付与して DI コンテナに登録しています。
-それ以外は特に解説は不要ですね。
 
 #### Constant
 
@@ -270,7 +269,6 @@ enum class GreetingPhase(val greeting: String) {
 }
 ```
 ##### GreetingPhase
-列挙型のメンバ自体は特に解説することはありません。
 `fromValue` メソッドはリクエストパラメータ `phase` の値を列挙型の要素に変換するためのロジックです。
 
 #### Model
@@ -460,7 +458,103 @@ From クラスを作成したので、これを用いるように Controller ク
 なにか良い方法はないものでしょうか?
 
 ## 単体テスト
-<!-- TODO: JUnit で単体テスト -->
+### Controller クラス
+Controller クラスの単体テストは、 [前回](https://qiita.com/lasta/items/aaf87d6ca811ae2170a4) にも作成しました。
+今回は `phase` パラメータに不正な値を渡した場合は `Bat Request` が返却されることが期待値のため、 `.andExpect(status().isBadRequest)` となります。
+実装は下記のとおりです。
+
+```kotlin:GreetingControllerTest.kt
+package com.lasta.api.sample.controller
+
+import org.hamcrest.Matchers.equalTo
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.MediaType
+import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+
+/**
+ * Test class for {@link GreetingController}
+ */
+@RunWith(SpringRunner::class)
+@SpringBootTest
+@AutoConfigureMockMvc
+class GreetingControllerTest {
+
+    @Autowired
+    lateinit var mvc: MockMvc
+
+    @Test
+    fun test_getGreeting_withLegalPhaseParam_thenOk() {
+        mvc.perform(MockMvcRequestBuilders.get("/greeting?phase=morning")
+                .accept(MediaType.TEXT_PLAIN_VALUE))
+                .andExpect(status().isOk)
+                .andExpect(content().string(equalTo<String>("Good Morning.")))
+    }
+
+    @Test
+    fun test_getGreeting_withLegalPhaseParamAndName_thenOk() {
+        mvc.perform(MockMvcRequestBuilders.get("/greeting?phase=morning&name=test-name")
+                .accept(MediaType.TEXT_PLAIN_VALUE))
+                .andExpect(status().isOk)
+                .andExpect(content().string(equalTo<String>("Good Morning, test-name.")))
+    }
+
+    @Test
+    fun test_getGreeting_withIllegalPhaseParam_thenNg() {
+        mvc.perform(MockMvcRequestBuilders.get("/greeting?phase=illegal")
+                .accept(MediaType.TEXT_PLAIN_VALUE))
+                .andExpect(status().isBadRequest)
+    }
+}
+```
+
+### Service クラス
+今回実装した `GreetingServiceImpl` クラスは外部リソースを用いないため、Spring Framework特有の単体テストはありません。
+パラメータの組み合わせによって挙動が変わるため、データ駆動テストにしてみました。
+
+```kotlin:GreetingServiceImplTest.kt
+package com.lasta.api.sample.service.impl
+
+import com.lasta.api.sample.constant.GreetingPhase
+import org.hamcrest.core.Is.`is`
+import org.junit.Assert.assertThat
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
+
+@RunWith(Parameterized::class)
+class GreetingServiceImplGreetTest(private val phase: GreetingPhase, private val name: String?, private val expected: String) {
+    companion object {
+        @JvmStatic
+        @Parameterized.Parameters
+        fun data(): Collection<Array<out Any?>> {
+            return listOf(
+                    arrayOf(GreetingPhase.MORNING, "name", "${GreetingPhase.MORNING.greeting}, name."),
+                    arrayOf(GreetingPhase.NOON, "name", "${GreetingPhase.NOON.greeting}, name."),
+                    arrayOf(GreetingPhase.EVENING, "name", "${GreetingPhase.EVENING.greeting}, name."),
+                    arrayOf(GreetingPhase.MORNING, "", "${GreetingPhase.MORNING.greeting}."),
+                    arrayOf(GreetingPhase.NOON, "", "${GreetingPhase.NOON.greeting}."),
+                    arrayOf(GreetingPhase.EVENING, "", "${GreetingPhase.EVENING.greeting}."),
+                    arrayOf(GreetingPhase.MORNING, null, "${GreetingPhase.MORNING.greeting}."),
+                    arrayOf(GreetingPhase.NOON, null, "${GreetingPhase.NOON.greeting}."),
+                    arrayOf(GreetingPhase.EVENING, null, "${GreetingPhase.EVENING.greeting}.")
+            )
+        }
+    }
+
+    @Test
+    fun test_greet() {
+        assertThat(GreetingServiceImpl().greet(phase, name), `is`(expected))
+    }
+}
+```
 
 ## 次回
 DB 接続 (予定)
