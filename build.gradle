@@ -43,7 +43,7 @@ repositories {
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-actuator')
     compile('org.springframework.boot:spring-boot-starter-data-elasticsearch')
-//    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.springframework.boot:spring-boot-starter-data-rest')
     compile('org.springframework.boot:spring-boot-starter-data-solr')
     compile('org.springframework.boot:spring-boot-starter-integration')
@@ -53,7 +53,8 @@ dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compile("org.jetbrains.kotlin:kotlin-reflect")
     runtime('org.springframework.boot:spring-boot-devtools')
-//    runtime('mysql:mysql-connector-java')
+    compile("org.hibernate:hibernate-java8")
+    runtime('mysql:mysql-connector-java')
     compileOnly('org.springframework.boot:spring-boot-configuration-processor')
     compileOnly('org.projectlombok:lombok')
     testCompile('org.springframework.boot:spring-boot-starter-test')
