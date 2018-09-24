@@ -13,23 +13,23 @@ import javax.persistence.Table
 data class ZipCodeEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long,
+        var id: Long = -1,
         @Column(name = "jis", nullable = false, insertable = false, updatable = false)
-        val jis: String,
+        var jis: String = "",
         @Column(name = "old_zip_code", nullable = false, insertable = false, updatable = false)
-        val oldZipCode: String,
+        var oldZipCode: String = "",
         @Column(name = "zip_code", nullable = false, insertable = false, updatable = false)
-        val zipCode: String,
+        var zipCode: String = "",
         @Column(name = "province_ruby", nullable = false, insertable = false, updatable = false)
-        val provinceRuby: String,
+        var provinceRuby: String = "",
         @Column(name = "city_ruby", nullable = false, insertable = false, updatable = false)
-        val cityRuby: String,
-        @Column(name = "townRuby", nullable = false, insertable = false, updatable = false)
-        val townRuby: String,
+        var cityRuby: String = "",
+        @Column(name = "town_ruby", nullable = false, insertable = false, updatable = false)
+        var townRuby: String = "",
         @Column(name = "province", nullable = false, insertable = false, updatable = false)
-        val provinceName: String,
+        var provinceName: String = "",
         @Column(name = "city", nullable = false, insertable = false, updatable = false)
-        val cityName: String,
+        var cityName: String = "",
         @Column(name = "town", nullable = false, insertable = false, updatable = false)
-        val townName: String
+        var townName: String = ""
 ) : Serializable
