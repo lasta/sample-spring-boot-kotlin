@@ -21,10 +21,11 @@ class ZipCodeController(private val service: ZipCodeService) {
             @RequestParam(name = "code", required = true)
             zipCode: String
     ): ResponseEntity<Collection<ZipCodeEntity>> {
-        val zipCodeEntities: Collection<ZipCodeEntity>? = service.findByZipCode(zipCode)
+        val zipCodeEntities: Collection<ZipCodeEntity> = service.findByZipCode(zipCode)
 
-        return zipCodeEntities
-                ?.let { ResponseEntity.ok(zipCodeEntities) }
-                ?: run { ResponseEntity<Collection<ZipCodeEntity>>(HttpStatus.NOT_FOUND) }
+        if (zipCodeEntities.isEmpty()) {
+            return ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+        return ResponseEntity.ok(zipCodeEntities)
     }
 }

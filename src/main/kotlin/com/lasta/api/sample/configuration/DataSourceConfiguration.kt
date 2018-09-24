@@ -1,6 +1,5 @@
 package com.lasta.api.sample.configuration
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
@@ -18,9 +17,6 @@ import javax.sql.DataSource
 @EnableTransactionManagement
 @EnableJpaRepositories("com.lasta.api.sample.repository")
 class DataSourceConfiguration {
-
-    @Autowired
-    lateinit var dataSource: DataSource
 
     @Bean
     fun jpaVendorAdapter(): JpaVendorAdapter =

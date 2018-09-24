@@ -5,7 +5,7 @@ import com.lasta.api.sample.service.GreetingService
 import org.springframework.stereotype.Service
 
 @Service
-class GreetingServiceImpl: GreetingService {
+class GreetingServiceImpl : GreetingService {
     override fun greet(phase: GreetingPhase, name: String?): String {
         if (name.isNullOrBlank()) {
             return "${phase.greeting}."

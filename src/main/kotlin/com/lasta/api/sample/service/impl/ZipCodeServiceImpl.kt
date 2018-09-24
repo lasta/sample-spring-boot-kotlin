@@ -7,12 +7,5 @@ import org.springframework.stereotype.Service
 
 @Service
 class ZipCodeServiceImpl(private val repository: ZipCodeRepository) : ZipCodeService {
-    override fun findByZipCode(zipCode: String): Collection<ZipCodeEntity>? = repository.findByZipCode(zipCode)
-            .let {
-                if (it.isEmpty()) {
-                    null
-                } else {
-                    it
-                }
-            }
+    override fun findByZipCode(zipCode: String): Collection<ZipCodeEntity> = repository.findByZipCode(zipCode)
 }
