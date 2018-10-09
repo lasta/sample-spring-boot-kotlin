@@ -1,11 +1,13 @@
 package com.lasta.api.sample.controller
 
 import com.lasta.api.sample.entity.ZipCodeEntity
+import com.lasta.api.sample.model.common.CommonParameter
 import com.lasta.api.sample.service.ZipCodeService
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,7 +19,8 @@ import javax.validation.constraints.Size
 @RestController
 @Validated
 @RequestMapping(path = ["zipcode"])
-class ZipCodeController(private val service: ZipCodeService) {
+class ZipCodeController(private val service: ZipCodeService, private val commonParameter: CommonParameter) {
+    val logger: Logger = LoggerFactory.getLogger(ZipCodeController::class.java)
 
     @GetMapping(produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
     fun getByZipCode(
@@ -26,6 +29,9 @@ class ZipCodeController(private val service: ZipCodeService) {
             @RequestParam(name = "code", required = true)
             zipCode: String
     ): ResponseEntity<Collection<ZipCodeEntity>> {
+        if (commonParameter.isDebug) {
+            logger.debug("DEBUG OPTION IS ENABLED")
+        }
         val zipCodeEntities: Collection<ZipCodeEntity> = service.findByZipCode(zipCode)
 
         if (zipCodeEntities.isEmpty()) {

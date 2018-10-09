@@ -48,4 +48,5 @@ class ZipCodeControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/zipcode?code=12345678").accept(MediaType.ALL))
                 .andExpect(status().isBadRequest)
     }
+
 }
