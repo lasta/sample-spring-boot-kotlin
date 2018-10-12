@@ -27,3 +27,4 @@
 
 ### LOG ###
 sample.log
+sample.log.*.gz
