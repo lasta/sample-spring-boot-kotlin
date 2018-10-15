@@ -38,12 +38,16 @@ spring:
       indent-output: true
       write-dates-as-timestamps: false
       write-durations-as-timestamps: true
+  data:
+    solr:
+      host: http://localhost:8983/solr
 
 # Embedded server configuration
 server:
   port: 8080
   servlet:
     context-path: /
+
 
 logging:
   file: sample.log
