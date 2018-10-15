@@ -18,11 +18,11 @@ import javax.validation.constraints.Size
 
 @RestController
 @Validated
-@RequestMapping(path = ["zipcode"])
+@RequestMapping(path = ["zipcode"], produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
 class ZipCodeController(private val service: ZipCodeService, private val commonParameter: CommonParameter) {
     val logger: Logger = LoggerFactory.getLogger(ZipCodeController::class.java)
 
-    @GetMapping(produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
+    @GetMapping
     fun getByZipCode(
             @Valid
             @Size(message = "code must be 7 letters.", max = 7, min = 7)
@@ -39,4 +39,11 @@ class ZipCodeController(private val service: ZipCodeService, private val commonP
         }
         return ResponseEntity.ok(zipCodeEntities)
     }
+
+    @GetMapping(path = ["/search"])
+    fun getByQuery(
+            @RequestParam(name = "q", required = true)
+            q: String
+    ): ResponseEntity<Collection<ZipCodeEntity>> =
+            ResponseEntity.ok(service.findByQuery(q))
 }

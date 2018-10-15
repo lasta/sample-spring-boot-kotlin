@@ -20,4 +20,8 @@ class ZipCodeServiceImpl(private val repository: ZipCodeRepository, private val 
         }
         return repository.findByZipCode(zipCode)
     }
+
+    override fun findByQuery(query: String): Collection<ZipCodeEntity> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
