@@ -3,6 +3,7 @@ package com.lasta.api.sample.controller
 import com.lasta.api.sample.entity.ZipCodeEntity
 import com.lasta.api.sample.model.common.CommonParameter
 import com.lasta.api.sample.model.form.ZipCodeForm
+import com.lasta.api.sample.model.form.ZipCodeFormWithMyValidator
 import com.lasta.api.sample.service.ZipCodeService
 import org.hibernate.validator.constraints.Length
 import org.slf4j.Logger
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
+import org.springframework.validation.ObjectError
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -42,13 +44,25 @@ class ZipCodeController(private val service: ZipCodeService, private val commonP
         return ResponseEntity.ok(zipCodeEntities)
     }
 
-    @GetMapping(path = ["/withbean"])
+    @GetMapping(path = ["/fieldvalidator"])
     fun getByZipCode(
             @Validated form: ZipCodeForm,
             bindingResult: BindingResult
     ): ResponseEntity<Collection<ZipCodeEntity>> {
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(listOf(ZipCodeEntity()))
+            return ResponseEntity.badRequest().body(listOf(ZipCodeEntity(zipCode = bindingResult.allErrors.toErrorMessage())))
+        }
+        val zipCodeEntities: Collection<ZipCodeEntity> = service.findByZipCode(form.code)
+        return ResponseEntity.ok(zipCodeEntities)
+    }
+
+    @GetMapping(path = ["/classvalidator"])
+    fun getByZipCode(
+            @Validated form: ZipCodeFormWithMyValidator,
+            bindingResult: BindingResult
+    ): ResponseEntity<Collection<ZipCodeEntity>> {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(listOf(ZipCodeEntity(zipCode = bindingResult.allErrors.toErrorMessage())))
         }
         val zipCodeEntities: Collection<ZipCodeEntity> = service.findByZipCode(form.code)
         return ResponseEntity.ok(zipCodeEntities)
@@ -60,5 +74,10 @@ class ZipCodeController(private val service: ZipCodeService, private val commonP
             q: String
     ): ResponseEntity<Collection<ZipCodeEntity>> =
             ResponseEntity.ok(service.findByQuery(q))
+
+    private fun Collection<ObjectError>.toErrorMessage(): String =
+            this.joinToString("\n") { error ->
+                "${error.objectName}: ${error.defaultMessage}"
+            }
 
 }

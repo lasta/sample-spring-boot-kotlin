@@ -4,7 +4,7 @@ import com.lasta.api.sample.model.validator.ValidZipCode
 import javax.validation.constraints.NotNull
 
 data class ZipCodeForm(
-    @field:ValidZipCode(message = "zipcode must be seven numeric letters.")
+    @field:ValidZipCode(message = "code: zipcode must be seven numeric letters.")
     @field:NotNull
     val code: String
 )
