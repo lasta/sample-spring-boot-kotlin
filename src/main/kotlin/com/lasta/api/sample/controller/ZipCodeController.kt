@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@Validated
 @RequestMapping(path = ["zipcode"], produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
 class ZipCodeController(private val service: ZipCodeService, private val commonParameter: CommonParameter) {
     val logger: Logger = LoggerFactory.getLogger(ZipCodeController::class.java)
@@ -29,18 +30,11 @@ class ZipCodeController(private val service: ZipCodeService, private val commonP
             @Length(message = "Zip code must be 7 letters", max = 7, min = 7)
             @RequestParam(name = "code", required = true)
             zipCode: String
-//            bindingResult: BindingResult
     ): ResponseEntity<Collection<ZipCodeEntity>> {
-//        if (bindingResult.hasErrors()) {
-//            return ResponseEntity(HttpStatus.BAD_REQUEST)
-//        }
         if (commonParameter.isDebug) {
             logger.debug("DEBUG OPTION IS ENABLED")
         }
         val zipCodeEntities: Collection<ZipCodeEntity> = service.findByZipCode(zipCode)
-//                .ifEmpty {
-//                    return ResponseEntity(HttpStatus.NOT_FOUND)
-//                }
         return ResponseEntity.ok(zipCodeEntities)
     }
 
@@ -52,7 +46,7 @@ class ZipCodeController(private val service: ZipCodeService, private val commonP
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(listOf(ZipCodeEntity(zipCode = bindingResult.allErrors.toErrorMessage())))
         }
-        val zipCodeEntities: Collection<ZipCodeEntity> = service.findByZipCode(form.code)
+        val zipCodeEntities: Collection<ZipCodeEntity> = service.findByZipCode(form.code!!)
         return ResponseEntity.ok(zipCodeEntities)
     }
 
@@ -64,7 +58,7 @@ class ZipCodeController(private val service: ZipCodeService, private val commonP
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(listOf(ZipCodeEntity(zipCode = bindingResult.allErrors.toErrorMessage())))
         }
-        val zipCodeEntities: Collection<ZipCodeEntity> = service.findByZipCode(form.code)
+        val zipCodeEntities: Collection<ZipCodeEntity> = service.findByZipCode(form.code!!)
         return ResponseEntity.ok(zipCodeEntities)
     }
 
