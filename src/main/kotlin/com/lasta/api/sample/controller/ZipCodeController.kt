@@ -33,10 +33,9 @@ class ZipCodeController(private val service: ZipCodeService, private val commonP
             logger.debug("DEBUG OPTION IS ENABLED")
         }
         val zipCodeEntities: Collection<ZipCodeEntity> = service.findByZipCode(zipCode)
-
-        if (zipCodeEntities.isEmpty()) {
-            return ResponseEntity(HttpStatus.NOT_FOUND)
-        }
+                .ifEmpty {
+                    return ResponseEntity(HttpStatus.NOT_FOUND)
+                }
         return ResponseEntity.ok(zipCodeEntities)
     }
 

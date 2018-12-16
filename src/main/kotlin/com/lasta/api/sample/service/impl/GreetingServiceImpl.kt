@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class GreetingServiceImpl : GreetingService {
     override fun greet(phase: GreetingPhase, name: String?): String {
         if (name.isNullOrBlank()) {
-            return "${phase.greeting}."
+            return phase.greeting
         }
         return "${phase.greeting}, $name."
     }
